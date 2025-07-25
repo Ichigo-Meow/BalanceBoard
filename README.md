@@ -1,29 +1,69 @@
-# 💰 Balance Board
+# React + TypeScript + Vite
 
-**Balance Board** is a modern financial analytics dashboard designed to track income, expenses, and budget trends with beautiful, interactive visualizations. Built with **Next.js**, **Tailwind CSS**, and **Recharts**, it showcases best practices in frontend architecture, state management with Redux, and data visualization.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
----
+Currently, two official plugins are available:
 
-## ✨ Features
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-- 📈 **Dynamic Charts**: Line, bar, and pie charts to visualize income and spending trends.
-- 🧾 **Transaction Table**: Filterable, searchable, and sortable transaction history.
-- 🎯 **Category Analytics**: Breakdown of expenses by customizable categories.
-- 📅 **Date Filters**: View your finances by day, week, month, or custom range.
-- 💡 **Summary Cards**: Quick insights for income, expenses, and net balance.
-- 💾 **Persistent Storage**: Save data locally.
-- 🌗 **Dark Mode**: Switch seamlessly between light and dark themes.
-- 📤 **Export to CSV**: Download your transaction history with one click.
+## Expanding the ESLint configuration
 
----
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-## 🛠 Tech Stack
+```js
+export default tseslint.config([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
 
-- **Framework**: [Next.js](https://nextjs.org/)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
-- **UI Library**: [ShadCN/UI](https://ui.shadcn.com/)
-- **Charts**: [Recharts](https://recharts.org/)
-- **State Management**: [Redux Toolkit](https://redux-toolkit.js.org/) + [React Redux](https://react-redux.js.org/)
-- **Date Utils**: [date-fns](https://date-fns.org/)
-- **Icons**: [Lucide](https://lucide.dev/)
+      // Remove tseslint.configs.recommended and replace with this
+      ...tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      ...tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      ...tseslint.configs.stylisticTypeChecked,
 
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+```
+
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
+
+export default tseslint.config([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+```
